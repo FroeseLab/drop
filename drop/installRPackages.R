@@ -1,6 +1,6 @@
 options(timeout = 3600) # 1 hour for downloads
 
-options(repos=structure(c(CRAN="https://cloud.r-project.org")), warn = -1)
+# options(repos=structure(c(CRAN="https://cloud.r-project.org")), warn = -1)
 
 if (!requireNamespace('BiocManager', quietly = TRUE)) {
     install.packages('BiocManager')
