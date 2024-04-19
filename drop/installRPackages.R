@@ -39,7 +39,7 @@ for (pckg_name in packages$package) {
         package <- package_dt$package
         message(paste("install", package))
         if(branch != ""){
-            BiocManager::install(paste0('git@github.com:', package, '.git'), ask=FALSE, update=FALSE, ref=branch)
+            devtools::install_git(paste0('git@github.com:', package, '.git'), ask=FALSE, update=FALSE, ref=branch)
         } else{
             BiocManager::install(package, ask=FALSE, update=FALSE)    
         }
