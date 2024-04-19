@@ -99,10 +99,23 @@ rule prepFasta_fasta:
         """
 
 ruleorder: changeHeader > sortBam > index_bam
+
+rule add_readgroup:
+    input:
+        bam = lambda x: sa.annotationTable.loc[sa.annotationTable['RNA_ID'] == x.sampleid, "RNA_BAM_FILE_ORIG"].values[0],
+    output:
+        "results/interim/bam/{sampleid}.bam"
+    shell:
+        """
+        samtools addreplacerg -r "@RG\tID:S1" -o {output[0]} {input.bam} 
+        #gatk AddOrReplaceReadGroups -I {input.bam} -O {output[0]} --QUIET true
+        """
+
+
 rule index_bam:
     input:
-        bam = "{path_to_bam}.bam"
+        bam = "results/interim/bam/{sampleid}.bam"
     output:
-        bai = "{path_to_bam}.bam.bai"
+        bai = "results/interim/bam/{sampleid}.bam.bai"
     shell:
         "samtools index {input.bam} {output.bai}"

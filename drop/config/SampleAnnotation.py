@@ -111,7 +111,7 @@ class SampleAnnotation:
             logger.info(f"WARNING: {len(missing)} files missing in samples annotation. Ignoring...")
             logger.debug(f"Missing files: {missing}")
 
-            file_mapping = file_mapping[file_mapping["FILE_PATH"].isin(existing)]
+            #file_mapping = file_mapping[file_mapping["FILE_PATH"].isin(existing)]
 
         # write file mapping
         file_mapping.to_csv(self.root / "file_mapping.csv", index=False)
