@@ -67,9 +67,13 @@ if(length(exCountIDs) > 0){
     }
 } else {
     message("symLink fraser dir")
-    file.symlink(paste0(workingDir, "savedObjects/","raw-local-", dataset),
-                 paste0(workingDir, "savedObjects/","raw-", dataset))
-    
+    dir_local_raw_dataset <- paste0(workingDir, "savedObjects/","raw-local-", dataset)
+    dir_raw_dataset <- paste0(workingDir, "savedObjects/","raw-", dataset)
+    dir.create(dir_raw_dataset, showWarnings = FALSE, recursive = TRUE)
+    for (fn in  list.files(dir_local_raw_dataset, include.dirs=TRUE)) {
+        file.copy(file.path(dir_local_raw_dataset, fn),
+        file.path(dir_raw_dataset, fn), recursive=TRUE)
+    }
     fds@colData$isExternal <- as.factor(FALSE)
     workingDir(fds) <- workingDir
     name(fds) <- paste0("raw-", dataset)
