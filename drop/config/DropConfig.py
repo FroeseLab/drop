@@ -20,7 +20,7 @@ class DropConfig:
 
     ]
 
-    def __init__(self, wbuildConfig, workDir):
+    def __init__(self, wbuildConfig, workDir, update_sample_params=False):
         """
         Parse wbuild/snakemake config object for DROP-specific content
         :param wbuildConfig: wBuild config object
@@ -97,15 +97,16 @@ class DropConfig:
         )
 
         # write sample params for each module AS not currently supported
-        sampleParams = SampleParams(
-            self.AE,
-            self.AS,
-            self.MAE,
-            self.RVC,
-            self.get("geneAnnotation"),
-            self.processedDataDir,
-            self.sampleAnnotation
-        )
+        if update_sample_params:
+            sampleParams = SampleParams(
+                self.AE,
+                self.AS,
+                self.MAE,
+                self.RVC,
+                self.get("geneAnnotation"),
+                self.processedDataDir,
+                self.sampleAnnotation
+            )
 
 
         # legacy
