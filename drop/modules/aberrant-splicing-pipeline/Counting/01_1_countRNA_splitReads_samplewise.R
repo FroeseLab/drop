@@ -10,6 +10,8 @@
 #'  input:
 #'   - done_fds: '`sm cfg.getProcessedDataDir() + 
 #'                "/aberrant_splicing/datasets/cache/raw-local-{dataset}/fds.done"`'
+#'   - sample_bam: '`sm lambda w: sa.getFilePath(w.sample_id, file_type="RNA_BAM_FILE")`'
+#'   - sample_bam_bai: '`sm lambda w: sa.getFilePath(w.sample_id, file_type="RNA_BAM_FILE")+".bai"`'
 #'  output:
 #'   - done_sample_splitCounts: '`sm cfg.getProcessedDataDir() + 
 #'                "/aberrant_splicing/datasets/cache/raw-local-{dataset}"
