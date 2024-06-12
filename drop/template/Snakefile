@@ -100,22 +100,30 @@ rule prepFasta_fasta:
 
 ruleorder: changeHeader > sortBam > index_bam
 
-rule add_readgroup:
-    input:
-        bam = lambda x: sa.annotationTable.loc[sa.annotationTable['RNA_ID'] == x.sampleid, "RNA_BAM_FILE_ORIG"].values[0],
-    output:
-        "results/interim/bam/{sampleid}.bam"
-    shell:
-        """
-        samtools addreplacerg -r "@RG\tID:S1" -o {output[0]} {input.bam} 
-        #gatk AddOrReplaceReadGroups -I {input.bam} -O {output[0]} --QUIET true
-        """
-
-
 rule index_bam:
     input:
-        bam = "results/interim/bam/{sampleid}.bam"
+        bam = "{path_to_bam}.bam"
     output:
-        bai = "results/interim/bam/{sampleid}.bam.bai"
+        bai = "{path_to_bam}.bam.bai"
     shell:
         "samtools index {input.bam} {output.bai}"
+
+def get_mem_mb_input(wildcards, input, attempt):
+    return 2**(attempt-1)* 3 * input.size_mb
+
+def get_mem_mb(wildcards, input, attempt):
+    return 2**(attempt-1) * 16000
+
+use rule AberrantSplicing_pipeline_Counting_01_1_countRNA_splitReads_samplewise_R as AberrantSplicing_pipeline_Counting_01_1_countRNA_splitReads_samplewise_R_b with:
+    resources:
+        mem_mb = get_mem_mb_input,
+        retries = 4
+
+ruleorder: AberrantSplicing_pipeline_Counting_01_1_countRNA_splitReads_samplewise_R_b > AberrantSplicing_pipeline_Counting_01_1_countRNA_splitReads_samplewise_R
+
+use rule AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R as AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R_b with:
+    resources:
+        mem_mb = get_mem_mb,
+        retries = 4
+
+ruleorder: AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R_b > AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R
