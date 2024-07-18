@@ -79,6 +79,8 @@ while(nrow(vcf <- readVcf(vcffile,param =  ScanVcfParam(fixed="FILTER",geno="GT"
 
     # Compute the MAX_AF based on all provided population columns
     # return -1 if only NAs are present (to avoid a warning)
+    missing_cols = colnames(maf_dt)[!colnames(maf_dt) %in% pops]
+    maf_dt[, (missing_cols) := NA]
     maf_dt$MAX_AF <- apply(maf_dt[, ..pops], 1, 
                       FUN=function(x){ max(x, -1, na.rm=TRUE) })
 
