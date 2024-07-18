@@ -127,3 +127,10 @@ use rule AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewi
         retries = 4
 
 ruleorder: AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R_b > AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R
+
+use rule AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R as AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R_b with:
+    resources:
+        mem_mb = get_mem_mb,
+        retries = 4
+
+ruleorder: AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R_b > AberrantSplicing_pipeline_Counting_01_3_countRNA_nonSplitReads_samplewise_R
